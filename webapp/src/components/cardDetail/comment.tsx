@@ -20,6 +20,8 @@ import MarkdownPreview from '../markdownPreview'
 
 import './comment.scss'
 
+import {ClientConfig} from '../../config/clientConfig'
+import {getClientConfig} from '../../store/clientConfig'
 
 type Props = {
     comment: Block
@@ -29,6 +31,7 @@ type Props = {
 }
 
 const Comment: FC<Props> = (props: Props) => {
+    const clientConfig = useAppSelector<ClientConfig>(getClientConfig)
     const {comment, userId, userImageUrl} = props
     const intl = useIntl()
     const user = useAppSelector(getUser(userId))
@@ -46,7 +49,7 @@ const Comment: FC<Props> = (props: Props) => {
                     className='comment-avatar'
                     src={userImageUrl}
                 />
-                <div className='comment-username'>{user?.username}</div>
+                <div className='comment-username'>{Utils.getUserDisplayName(user!, clientConfig.teammateNameDisplay)}</div>
                 <GuestBadge show={user?.is_guest}/>
 
                 <Tooltip title={Utils.displayDateTime(date, intl)}>
